@@ -27,10 +27,10 @@ model.fit(x=x_train, y=y_train, epochs=150, batch_size=10, verbose=0)
 
 3. CI/CD Pipeline：<br>
 詳如程式檔「.gitlab-ci.yml」，Pipeline僅有二個stage。<br>
-(1) stege_01:<br>用Dockerfile、flask_ml_demo.py、requirements.txt及模型檔model_pima.h5打包成 image，即模型預測服務API，上傳到Harbor。<br>
+(1) stege_01:<br>用Dockerfile、flask_ml_demo.py、requirements.txt及模型檔model_pima.h5打包成 image，即模型預測服務(API)，上傳到Harbor。<br>
 (2) stege_02:<br>檢查舊服務是否存在，若是則清除。從Harbor拉取之前打包上傳的image，啟動container，即模型預測服務(API)。<br><br>
-簡言之，當專案內的檔案變動，如：深度學習模型更新、服務的主程式flask_ml_demo.py有變動…等，git push後使觸發Pipeline開始執行，自動執行二個stage，最後完成重新部署該預測服務。<br>
-若新增其他stage，如：資料ETL、模型訓練、模型測試…等功能，便可達成MLOps(Machine Learning Operations)的精神。
+簡言之，當專案內的檔案變動，如：深度學習模型更新、服務的主程式flask_ml_demo.py有變動…等，「git push」後將觸發Pipeline執行，自動依序執行二個stage的任務，最後完成重新部署該預測服務。<br>
+若新增其他stage，如：資料ETL、模型訓練、模型測試…等功能，則從資料清洗→匯入資料庫→擷取最新資料加入訓練集→訓練模型、測試模型→通過衡量指標→部署新模型及服務…，如此便可達成MLOps(Machine Learning Operations)的精神。
 
 <br>
 
