@@ -1,0 +1,36 @@
+variables:
+  PUSH_IMAGE_NAME: "your_image_name"
+  PUSH_IMAGE_TAG: "your_image_tag"    
+  DEV_HARBOR_HOST: "your_harbor_host"  
+  DEV_HARBOR_PATH: "your_harbor_path"
+  SERVICE_NAME: "your_machine_learning_service_name"
+
+stages:
+  - package_pycode
+  - deploy_service  
+ 
+build_job:
+  stage: package_pycode  
+  script:
+    - docker build -t ${PUSH_IMAGE_NAME}:${PUSH_IMAGE_TAG} .
+    - echo "Stage_01_A - successfully build image," ${PUSH_IMAGE_NAME}":"${PUSH_IMAGE_TAG}
+    - docker tag ${PUSH_IMAGE_NAME}:${PUSH_IMAGE_TAG} ${DEV_HARBOR_HOST}/${DEV_HARBOR_PATH}/${PUSH_IMAGE_NAME}:${PUSH_IMAGE_TAG}
+    - docker login -u ${DEV_HARBOR_ROBOT} -p ${DEV_HARBOR_KEY} ${DEV_HARBOR_HOST} 
+    - echo "exe ... docker push ${DEV_HARBOR_HOST}/${DEV_HARBOR_PATH}/${PUSH_IMAGE_NAME}:${PUSH_IMAGE_TAG}"
+    - docker push ${DEV_HARBOR_HOST}/${DEV_HARBOR_PATH}/${PUSH_IMAGE_NAME}:${PUSH_IMAGE_TAG}   
+    - echo "Stage_01_B - successfully push image," ${PUSH_IMAGE_NAME}":"${PUSH_IMAGE_TAG}
+
+container_job:
+  stage: deploy_service   
+  script:                 
+    - >      
+      sudo docker service ls --filter "name=${SERVICE_NAME}" -q | xargs --no-run-if-empty sudo docker service rm; 
+      sleep 8;
+      sudo docker images -q ${DEV_HARBOR_HOST}/${DEV_HARBOR_PATH}/${PUSH_IMAGE_NAME}:${PUSH_IMAGE_TAG} | xargs --no-run-if-empty sudo docker rmi -f;
+      sleep 5;
+      sudo docker pull ${DEV_HARBOR_HOST}/${DEV_HARBOR_PATH}/${PUSH_IMAGE_NAME}:${PUSH_IMAGE_TAG}; 
+      sleep 2;
+      sudo docker service create --replicas 2 --name="${SERVICE_NAME}" 
+      -p 5888:9000 ${DEV_HARBOR_HOST}/${DEV_HARBOR_PATH}/${PUSH_IMAGE_NAME}:${PUSH_IMAGE_TAG}; 
+      exit;"   
+    - echo "Step_02 - run your container(service)..."
