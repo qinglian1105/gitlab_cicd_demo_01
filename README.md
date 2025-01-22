@@ -1,9 +1,9 @@
 # **gitlab_cicd_demo_01**
 
-## **A simple example: deploying a service of making predictions by Deep Learning with GitLab CI/CD**
+## **An example: deploying a service of making predictions by Deep Learning with GitLab CI/CD**
 
 #### **Ⅰ. 目的** 
-使用GitLab CI/CD提升自動化部署深度學習(Deep Learning)模型預測服務(API)。 
+使用 GitLab CI/CD 提升自動化部署 深度學習(Deep Learning) 模型預測服務(API)。 
 
 #### **Ⅱ. 主要工具或套件**
 GitLab CI/CD、Harbor(Docker Registry)、Flask、Tensorflow(Keras)
@@ -13,7 +13,7 @@ GitLab CI/CD、Harbor(Docker Registry)、Flask、Tensorflow(Keras)
 來自 Kaggle 的 Pima Indians Diabetes Database，資料內容、欄位 ([詳見](<https://www.kaggle.com/datasets/uciml/pima-indians-diabetes-database/data>))。
 
 2. 深度學習模型：<br>
-本專案主要目的為展示CI/CD，模型訓練並不嚴謹，並忽略模型績效衡量指標，相關參數如下：<br>
+主要目的為展示CI/CD，模型訓練並不嚴謹，並忽略模型績效衡量指標，相關參數如下：<br>
 
     ```python
     # define model
@@ -46,7 +46,7 @@ GitLab CI/CD、Harbor(Docker Registry)、Flask、Tensorflow(Keras)
 
 ---
 
-#### **References**
+#### **Ⅳ. References**
 
 [1] [Get started with GitLab CI/CD](<https://docs.gitlab.com/ee/ci/>)
 

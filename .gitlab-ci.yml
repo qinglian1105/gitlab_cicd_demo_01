@@ -1,3 +1,4 @@
+# .gitlab-ci.yml 
 variables:
   PUSH_IMAGE_NAME: "your_image_name"
   PUSH_IMAGE_TAG: "your_image_tag"    
